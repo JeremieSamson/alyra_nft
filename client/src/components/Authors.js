@@ -9,10 +9,20 @@ class Home extends Component {
                 <div className="container mt-5  mb-5">
                     <div className="row">
                         <div className="col-md">
-                            <Author imgSrc="authors/jonathan.jpeg" name="Jonathan Siti" description="Ylly forever" githubLink="https://github.com/Jonacity"/>
+                            <Author
+                                imgSrc="authors/jonathan.jpeg"
+                                name="Jonathan Siti"
+                                description="Ylly forever"
+                                githubLink="https://github.com/Jonacity"
+                            />
                         </div>
                         <div className="col-md">
-                            <Author imgSrc="authors/nathan.jpeg" name="Nathan L" description="Ylly forever" githubLink="https://github.com/NaLe3"/>
+                            <Author
+                                imgSrc="authors/nathan.jpeg"
+                                name="Nathan L"
+                                description="Ylly forever"
+                                githubLink="https://github.com/NaLe3"
+                            />
                         </div>
                         <div className="col-md">
                             <Author

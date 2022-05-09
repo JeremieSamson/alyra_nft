@@ -1,35 +1,45 @@
 import React, { Component } from 'react'
 import getWeb3 from "../getWeb3";
-import SimpleStorageContract from "../contracts/SimpleStorage.json";
-import {NotificationManager} from 'react-notifications';
+import {NotificationManager} from "react-notifications";
 
 class ConnectButton extends Component {
     constructor(props) {
         super(props);
         this.handleConnectWallet = this.handleConnectWallet.bind(this);
-        this.state = this.props.state;
+        this.handleLogout = this.handleLogout.bind(this);
+        this.accountChangedHandler = this.accountChangedHandler.bind(this);
+        this.chainChangedHandler = this.chainChangedHandler.bind(this);
+        this.state = JSON.parse(window.localStorage.getItem('accounts')) || {
+            accounts: null,
+        }
+    }
+
+    componentDidMount = async () => {
+        window.addEventListener("load", async () => {
+            if (window.ethereum) {
+                window.ethereum.on('accountsChanged', this.accountChangedHandler);
+                window.ethereum.on('chainChanged', this.chainChangedHandler);
+            }
+        });
+    };
+
+    handleLogout() {
+        window.localStorage.clear();
+        this.setState({accounts: null});
+        NotificationManager.success('You have successfully logout', '', 5000);
     }
 
     async handleConnectWallet(e) {
         e.preventDefault();
 
         try {
-            // Get network provider and web3 instance.
             const web3 = await getWeb3();
-            // Use web3 to get the user's accounts.
             const accounts = await web3.eth.getAccounts();
-            // Get the contract instance.
-            const networkId = await web3.eth.net.getId();
-            const deployedNetwork = SimpleStorageContract.networks[networkId];
 
-            const instance = new web3.eth.Contract(
-                SimpleStorageContract.abi,
-                deployedNetwork && deployedNetwork.address,
-            );
+            super.setState({accounts: accounts});
+            window.localStorage.setItem('accounts', JSON.stringify({accounts}));
 
-            // Set web3, accounts, and contract to the state, and then proceed with an
-            // example of interacting with the contract's methods.
-            this.setState({web3: web3, accounts: accounts, contract: instance});
+            NotificationManager.success('You have successfully login', '', 5000);
         } catch (error) {
             // Catch any errors for any of the above operations.
             alert(
@@ -39,20 +49,24 @@ class ConnectButton extends Component {
         }
     }
 
-    getAvatar() {
-        return this.state.accounts > 0
-            ? <span>Sign in</span>
-            : <span>Hello {this.state.accounts[0]}</span>
-        ;
+    accountChangedHandler(newAccount) {
+        window.localStorage.setItem('accounts', JSON.stringify({newAccount}));
+        this.setState({accounts: newAccount});
+    }
+
+    chainChangedHandler(newChainId) {
+        console.log(newChainId);
+        if (newChainId !== "0x539") {
+            NotificationManager.error('This chain is not supported', '', 5000);
+        }
     }
 
     render() {
-        console.log(this.state.accounts);
         return (
             <>
                 {
                     this.state.accounts>0
-                        ? <span>Hello {this.state.accounts[0]}</span>
+                        ? <span>Hello {this.state.accounts[0]} <a href="" onClick={this.handleLogout}>Log out</a></span>
                         : <a href="#" onClick={this.handleConnectWallet}>Sign In</a>
                 }
             </>

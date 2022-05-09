@@ -40,7 +40,7 @@ class Footer extends Component {
                                     <h6 className="text-uppercase fw-bold mb-4">
                                         Contact
                                     </h6>
-                                    <p><i className="fas fa-home me-3"></i> 10 Rue Greneta, Alyra</p>
+                                    <p><i className="fas fa-home me-3"></i>10 Rue Greneta, Alyra</p>
                                     <p>
                                         <i className="fas fa-envelope me-3"></i>
                                         contact@cryptobrothers.com

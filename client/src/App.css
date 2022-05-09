@@ -32,4 +32,6 @@
   max-width: 540px;
 }
 
-.card-img-top {}
+.searchInput {
+  margin: 25px 0 25px 0;
+}
