@@ -93,3 +93,6 @@ react-build: truffle-compile
 
 react-start: truffle-compile
 	$(REACT_NPM) run start
+
+react-test: truffle-compile
+	$(REACT_NPM) run test
