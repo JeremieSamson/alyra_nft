@@ -1,8 +1,7 @@
 docker-dev.lock
 build
 node_modules
+client/node_modules
 coverage
 coverage.json
 .env
-node_modules/
-client/node_modules/
