@@ -1,6 +1,7 @@
-import React, { Component } from 'react'
+import React, {Component, useState} from 'react'
 import getWeb3 from "../getWeb3";
 import {NotificationManager} from "react-notifications";
+import Contract from "../contracts/SimpleStorage.json";
 
 class ConnectButton extends Component {
     constructor(props) {
@@ -9,7 +10,7 @@ class ConnectButton extends Component {
         this.handleLogout = this.handleLogout.bind(this);
         this.accountChangedHandler = this.accountChangedHandler.bind(this);
         this.chainChangedHandler = this.chainChangedHandler.bind(this);
-        this.state = JSON.parse(window.localStorage.getItem('accounts')) || {
+        this.state = JSON.parse(window.localStorage.getItem('state')) || {
             accounts: null,
         }
     }
@@ -35,11 +36,15 @@ class ConnectButton extends Component {
         try {
             const web3 = await getWeb3();
             const accounts = await web3.eth.getAccounts();
+            const networkId = await web3.eth.net.getId();
+            const deployedNetwork = Contract.networks[networkId];
+            const contract = new web3.eth.Contract(
+                Contract.abi,
+                deployedNetwork && deployedNetwork.address,
+            );
 
-            super.setState({accounts: accounts});
-            window.localStorage.setItem('accounts', JSON.stringify({accounts}));
-
-            NotificationManager.success('You have successfully login', '', 5000);
+            super.setState({accounts: accounts, contract: contract});
+            window.localStorage.setItem('state', JSON.stringify({accounts: accounts, contract: contract}));
         } catch (error) {
             // Catch any errors for any of the above operations.
             alert(
@@ -50,7 +55,7 @@ class ConnectButton extends Component {
     }
 
     accountChangedHandler(newAccount) {
-        window.localStorage.setItem('accounts', JSON.stringify({newAccount}));
+        window.localStorage.setItem('state', JSON.stringify({newAccount}));
         this.setState({accounts: newAccount});
     }
 
@@ -66,7 +71,7 @@ class ConnectButton extends Component {
             <>
                 {
                     this.state.accounts>0
-                        ? <span>Hello {this.state.accounts[0]} <a href="" onClick={this.handleLogout}>Log out</a></span>
+                        ? <span><a href="/my-nft">My NFTs</a>&nbsp;&nbsp;<a href="" onClick={this.handleLogout}>Log out</a></span>
                         : <a href="#" onClick={this.handleConnectWallet}>Sign In</a>
                 }
             </>

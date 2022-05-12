@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
+import nfts from "../data/nfts.json";
 import Card from "./Card";
-import data from "../data/data.json"
 
-class Explorer extends Component {
+class MyNFT extends Component {
     constructor(props) {
         super(props);
         this.handleSearch = this.handleSearch.bind(this);
-
         this.state = {
-            query: null
-        }
+          query: null
+        };
     }
 
     handleSearch(e) {
@@ -17,7 +16,7 @@ class Explorer extends Component {
     }
 
     render() {
-        const filteredData = data.filter((data) => {
+        const filteredData = nfts.filter((data) => {
             if (this.state.query === null || this.state.query === '') {
                 return data;
             } else {
@@ -50,4 +49,4 @@ class Explorer extends Component {
     }
 }
 
-export default Explorer;
+export default MyNFT;

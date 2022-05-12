@@ -9,6 +9,7 @@ import Contact from "./components/Contact";
 import Footer from "./components/Footer";
 import Authors from "./components/Authors";
 import {NotificationContainer} from "react-notifications";
+import MyNFT from "./components/MyNFT";
 
 class App extends Component {
   runExample = async () => {
@@ -33,7 +34,8 @@ class App extends Component {
                 <TopBar/>
                 <BrowserRouter>
                   <Routes>
-                      <Route exact path='/home' element={<Home />}/>
+                      <Route exact path='/' element={<Home />}/>
+                      <Route exact path='/my-nft' element={<MyNFT />}/>
                       <Route exact path='/explore' element={<Explorer />}/>
                       <Route exact path='/team' element={<Authors />}/>
                       <Route exact path='/contact' element={<Contact />}/>

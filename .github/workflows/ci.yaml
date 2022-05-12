@@ -23,7 +23,7 @@ jobs:
         run: ./node_modules/.bin/eslint . --ext .js
 
   test_coverage:
-    name: Test and coverage
+    name: Test smartcontract
     needs: lint
     runs-on: ubuntu-latest
     steps:
@@ -46,20 +46,3 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-
-  test_react:
-    name: Launch react
-    needs: lint
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '14'
-
-      - name: Install
-        run: npm install
-
-      - name: React test
-        run: npm --prefix client test
