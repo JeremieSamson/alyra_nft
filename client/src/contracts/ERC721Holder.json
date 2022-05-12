@@ -3227,8 +3227,8 @@
     "version": "0.8.13+commit.abaa5c0e.Emscripten.clang"
   },
   "networks": {},
-  "schemaVersion": "3.4.6",
-  "updatedAt": "2022-05-12T14:23:31.129Z",
+  "schemaVersion": "3.4.4",
+  "updatedAt": "2022-05-12T21:01:15.322Z",
   "devdoc": {
     "details": "Implementation of the {IERC721Receiver} interface. Accepts all token transfers. Make sure the contract is able to use its token with {IERC721-safeTransferFrom}, {IERC721-approve} or {IERC721-setApprovalForAll}.",
     "kind": "dev",
