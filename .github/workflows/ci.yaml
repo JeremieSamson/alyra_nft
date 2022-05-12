@@ -23,7 +23,7 @@ jobs:
         run: ./node_modules/.bin/eslint . --ext .js
 
   test_coverage:
-    name: Test and coverage
+    name: Test smartcontract
     needs: lint
     runs-on: ubuntu-latest
     steps:

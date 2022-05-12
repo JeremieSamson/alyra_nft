@@ -48,6 +48,7 @@ sh:
 node_modules:
 	$(NPM) install
 	$(NPM) install -g truffle@5.5.7
+	$(REACT_NPM) install
 
 ## TRUFFLE
 
@@ -92,3 +93,6 @@ react-build: truffle-compile
 
 react-start: truffle-compile
 	$(REACT_NPM) run start
+
+react-test: truffle-compile
+	$(REACT_NPM) run test
