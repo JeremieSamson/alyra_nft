@@ -40,34 +40,7 @@ make react-start
 
 Then go to [https://localhost:3000](https://localhost:3000)
 
-## Lint
-
-### [ESLint](https://eslint.org/)
-
-ESLint let you find and fix problems in your javascript code.
-It is a nice plugin to lint your code.
-
-```
-// To see errors
-make esnlint
-
-// To fix errors
-make esnlintfix
-```
-
-### [Sodium/Ethlint](https://github.com/duaraghav8/Ethlint)
-
-Customizable linter for ethereum's solidity smart contract.
-
-```
-// To see errors
-make solium
-
-// To fix errors
-make soliumfix
-```
-
-### Contributors
+## Contributors
 
 This project has been made by a group of three for the alyra NFT project. Work repartition has been done like this:
 - @Jonacity: Back/Solidity
