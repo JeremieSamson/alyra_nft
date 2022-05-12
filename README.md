@@ -71,7 +71,7 @@ To launch react, you just need to do as follow
 make react-start
 ```
 
-Then go to [https://localhost:3000](https://localhost:3000)
+Then go to [http://localhost:3000](http://localhost:3000)
 
 ## Contributors
 
