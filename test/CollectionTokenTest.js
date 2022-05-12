@@ -8,12 +8,14 @@ contract('Collection token test', accounts => {
     const user = accounts[1]
     let collectionTokenInstance
     let collectionMarketInstance
-    const baseUri = 'ipfs://QmbaFspXrjbWkEuGWWWWpKp9SqYkbSQtkz7etDvxMsjDTy/'
+    const baseUri = 'ipfs://QmfQYC1s6n77SmCSyqcXbYcJNwXQ1so9EUVUEKtWvxrhVL/'
     const tokenMetadataURIs = [
-        'Mojo-Jojo.json',
+        'mojo-jojo.json',
         'morpheus.json',
         'biggie.json'
     ]
+
+    expectBN = (number1, number2) => expect(number1).to.bignumber.equal(new BN(number2))
 
     describe('CollectionToken', () => {
         beforeEach(async () => {
@@ -24,10 +26,10 @@ contract('Collection token test', accounts => {
         context('Update inital variables', () => {
             it('should set the max supply', async () => {
                 let result = await collectionTokenInstance.maxSupply()
-                expect(result).to.bignumber.equal(new BN(3))
+                expectBN(result, 3)
                 await collectionTokenInstance.setMaxSupply(10)
                 result = await collectionTokenInstance.maxSupply()
-                expect(result).to.bignumber.equal(new BN(10))
+                expectBN(result, 10)
             })
 
             it('should not set the max supply if sender is not the owner', async () => {
@@ -78,8 +80,8 @@ contract('Collection token test', accounts => {
                 let ownerBalance = await collectionTokenInstance.balanceOf(owner)
                 let approvedResult = await collectionTokenInstance.isApprovedForAll(owner, collectionMarketInstance.address)
 
-                expect(result).to.bignumber.equal(new BN(0))
-                expect(ownerBalance).to.bignumber.equal(new BN(0))
+                expectBN(result, 0)
+                expectBN(ownerBalance, 0)
                 expect(approvedResult).to.equal(false)
 
                 await collectionTokenInstance.mintCollection()
@@ -90,8 +92,8 @@ contract('Collection token test', accounts => {
                     collectionMarketInstance.address
                 )
 
-                expect(result).to.bignumber.equal(new BN(tokenMetadataURIs.length))
-                expect(ownerBalance).to.bignumber.equal(new BN(tokenMetadataURIs.length))
+                expectBN(result, tokenMetadataURIs.length)
+                expectBN(ownerBalance, tokenMetadataURIs.length)
                 expect(approvedResult).to.equal(true)
 
                 for (let i = 0; i < tokenMetadataURIs.length; i++) {
@@ -102,6 +104,14 @@ contract('Collection token test', accounts => {
 
             it('should not mint the collection if sender is not the owner', async () => {
                 await expectRevert(collectionTokenInstance.mintCollection({ from: user }), 'Ownable: caller is not the owner')
+            })
+
+            it('should not mint more than the supply', async () => {
+                const maxSupply = await collectionTokenInstance.maxSupply()
+                expectBN(maxSupply, tokenMetadataURIs.length)
+
+                await collectionTokenInstance.mintCollection()
+                await expectRevert(collectionTokenInstance.mintCollection({ from: owner }), 'Unable to mint more items')
             })
         })
     })

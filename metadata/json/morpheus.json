@@ -1,5 +1,6 @@
 {
     "name": "Morpheus",
-    "description": "This is a picture of Morpheus from Matrix",
-    "image": "ipfs://QmbaFspXrjbWkEuGWWWWpKp9SqYkbSQtkz7etDvxMsjDTy/morpheus.jpg"
+    "description": "This is a picture of the badass Morpheus from Matrix",
+    "image": "ipfs://QmZSppR7sn2bwVNvezwY5628s3DnNGVSLNNNRyF9VyGwpj/morpheus.jpg",
+    "pinata_url": "https://gateway.pinata.cloud/ipfs/QmZSppR7sn2bwVNvezwY5628s3DnNGVSLNNNRyF9VyGwpj/morpheus.jpg"
 }

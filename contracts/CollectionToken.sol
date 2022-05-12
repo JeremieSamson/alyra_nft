@@ -20,14 +20,14 @@ contract CollectionToken is ERC721Enumerable, ERC721URIStorage, Ownable {
     uint public maxSupply = 3;
 
     /**
-     * @dev Market contract address
-     */
-    address public marketContractAddress;
-
-    /**
      * @dev Base URI
      */
     string private baseURI;
+
+    /**
+     * @dev Market contract address
+     */
+    address public marketContractAddress;
 
     /**
      * @dev Token minted event
@@ -93,15 +93,15 @@ contract CollectionToken is ERC721Enumerable, ERC721URIStorage, Ownable {
     function mintCollection() public onlyOwner {
         uint totalSupply = totalSupply();
         string[3] memory tokenMetadataURIs = [
-            "Mojo-Jojo.json",
+            "mojo-jojo.json",
             "morpheus.json",
             "biggie.json"
         ];
+        require(totalSupply < maxSupply, "Unable to mint more items");
 
         for (uint i = 0; i < tokenMetadataURIs.length; i++) {
             totalSupply++;
             uint newTokenId = totalSupply;
-
             super._safeMint(msg.sender, newTokenId);
             super._setTokenURI(newTokenId, tokenMetadataURIs[i]);
 
