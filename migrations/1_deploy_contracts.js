@@ -1,6 +1,6 @@
 const CollectionToken = artifacts.require('./CollectionToken.sol')
 const CollectionMarket = artifacts.require('./CollectionMarket.sol')
-const baseUri = 'ipfs://QmbaFspXrjbWkEuGWWWWpKp9SqYkbSQtkz7etDvxMsjDTy/'
+const baseUri = 'ipfs://QmfQYC1s6n77SmCSyqcXbYcJNwXQ1so9EUVUEKtWvxrhVL/'
 
 module.exports = function (deployer) {
     deployer.deploy(CollectionMarket).then(function () {

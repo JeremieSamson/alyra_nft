@@ -1,5 +1,6 @@
 {
     "name": "Notorious BIG",
-    "description": "This is a picture of the notorious BIG",
-    "image": "ipfs://QmbaFspXrjbWkEuGWWWWpKp9SqYkbSQtkz7etDvxMsjDTy/biggie.jpg"
+    "description": "This is a picture of the notorious B.I.G.",
+    "image": "ipfs://QmZSppR7sn2bwVNvezwY5628s3DnNGVSLNNNRyF9VyGwpj/biggie.jpg",
+    "pinata_url": "https://gateway.pinata.cloud/ipfs/QmZSppR7sn2bwVNvezwY5628s3DnNGVSLNNNRyF9VyGwpj/biggie.jpg"
 }

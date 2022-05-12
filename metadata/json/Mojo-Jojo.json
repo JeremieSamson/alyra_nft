@@ -1,5 +1,6 @@
 {
     "name": "Mojo Jojo",
-    "description": "This is a picture of Mojo Jojo",
-    "image": "ipfs://QmbaFspXrjbWkEuGWWWWpKp9SqYkbSQtkz7etDvxMsjDTy/Mojo-Jojo.jpg"
+    "description": "This is a picture of the mad Mojo Jojo",
+    "image": "ipfs://QmZSppR7sn2bwVNvezwY5628s3DnNGVSLNNNRyF9VyGwpj/mojo-jojo.jpg",
+    "pinata_url": "https://gateway.pinata.cloud/ipfs/QmZSppR7sn2bwVNvezwY5628s3DnNGVSLNNNRyF9VyGwpj/mojo-jojo.jpg"
 }

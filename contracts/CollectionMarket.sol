@@ -28,11 +28,6 @@ contract CollectionMarket is ERC721Holder, Ownable {
     Counters.Counter private itemSoldCount;
 
     /**
-     * @dev From item id to item map
-     */
-    mapping(uint => Item) private items;
-
-    /**
      * @dev Item struct
      */
     struct Item {
@@ -55,6 +50,11 @@ contract CollectionMarket is ERC721Holder, Ownable {
         address seller,
         address owner
     );
+
+    /**
+     * @dev From item id to item map
+     */
+    mapping(uint => Item) private items;
 
     /**
      * @notice Add a new item to items and transfer the token

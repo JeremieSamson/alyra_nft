@@ -9,9 +9,9 @@ contract('Collection market test', accounts => {
     const buyer = accounts[2]
     let collectionTokenInstance
     let collectionMarketInstance
-    const baseUri = 'ipfs://QmbaFspXrjbWkEuGWWWWpKp9SqYkbSQtkz7etDvxMsjDTy/'
+    const baseUri = 'ipfs://QmfQYC1s6n77SmCSyqcXbYcJNwXQ1so9EUVUEKtWvxrhVL/'
     const tokenMetadataURIs = [
-        'Mojo-Jojo.json',
+        'mojo-jojo.json',
         'morpheus.json',
         'biggie.json'
     ]
