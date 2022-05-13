@@ -19429,12 +19429,12 @@
         }
       },
       "links": {},
-      "address": "0x854667d90B8A5212eddc98Bf841152C65f81bD6c",
-      "transactionHash": "0xe86ab136d09013a8eec02962ab73fda8f7a67c987cb4488d6fe59db4b06c1db5"
+      "address": "0x59A24549adc9a144233032f82a11702D59EBdd16",
+      "transactionHash": "0xb533078d648191795c39fd9943071e36428f40ef882d97ca0552a43b0645f524"
     }
   },
   "schemaVersion": "3.4.6",
-  "updatedAt": "2022-05-13T10:03:56.686Z",
+  "updatedAt": "2022-05-13T11:17:01.767Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Jonacity",

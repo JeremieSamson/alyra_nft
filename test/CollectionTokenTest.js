@@ -1,4 +1,5 @@
 const CollectionToken = artifacts.require('CollectionToken')
+const CollectionFactory = artifacts.require('CollectionFactory')
 const CollectionMarket = artifacts.require('CollectionMarket')
 const { expect } = require('chai')
 const { BN, expectRevert, constants } = require('@openzeppelin/test-helpers')
@@ -20,20 +21,28 @@ contract('Collection token test', accounts => {
     describe('CollectionToken', () => {
         beforeEach(async () => {
             collectionMarketInstance = await CollectionMarket.new({ from: owner })
-            collectionTokenInstance = await CollectionToken.new(baseUri, collectionMarketInstance.address, { from: owner })
+            collectionFactoryInstance = await CollectionFactory.new({ from: owner })
+            const tx = await collectionFactoryInstance.createNFTCollection(
+                'Crypto Brothers',
+                'CP',
+                baseUri,
+                collectionMarketInstance.address, { from: owner }
+            )
+            collectionAddress = tx.logs[0].args[1]
+            collectionTokenInstance = await CollectionToken.at(collectionAddress)
         })
 
         context('Update inital variables', () => {
             it('should set the max supply', async () => {
                 let result = await collectionTokenInstance.maxSupply()
                 expectBN(result, 3)
-                await collectionTokenInstance.setMaxSupply(10)
+                await collectionTokenInstance.setMaxSupply(10, { from: owner })
                 result = await collectionTokenInstance.maxSupply()
                 expectBN(result, 10)
             })
 
             it('should not set the max supply if sender is not the owner', async () => {
-                await expectRevert(collectionTokenInstance.setMaxSupply(10, { from: user }), 'Ownable: caller is not the owner.')
+                await expectRevert(collectionTokenInstance.setMaxSupply(10, { from: user }), 'Not owner')
             })
 
             it('should set the market contract address', async () => {
@@ -48,7 +57,7 @@ contract('Collection token test', accounts => {
                 await expectRevert(
                     collectionTokenInstance.setMarketContractAddress(collectionTokenInstance.address,
                         { from: user }),
-                    'Ownable: caller is not the owner.'
+                    'Not owner'
                 )
             })
 
@@ -67,9 +76,8 @@ contract('Collection token test', accounts => {
 
             it('should not set the new base URI if sender is not the owner', async () => {
                 await expectRevert(
-                    collectionTokenInstance.setBaseURI('ipfs://qwertyui/',
-                        { from: user }),
-                    'Ownable: caller is not the owner'
+                    collectionTokenInstance.setBaseURI('ipfs://qwertyui/', { from: user }),
+                    'Not owner'
                 )
             })
         })
@@ -84,7 +92,7 @@ contract('Collection token test', accounts => {
                 expectBN(ownerBalance, 0)
                 expect(approvedResult).to.equal(false)
 
-                await collectionTokenInstance.mintCollection()
+                await collectionTokenInstance.mintCollection(tokenMetadataURIs)
                 result = await collectionTokenInstance.totalSupply()
                 ownerBalance = await collectionTokenInstance.balanceOf(owner)
                 approvedResult = await collectionTokenInstance.isApprovedForAll(
@@ -103,15 +111,15 @@ contract('Collection token test', accounts => {
             })
 
             it('should not mint the collection if sender is not the owner', async () => {
-                await expectRevert(collectionTokenInstance.mintCollection({ from: user }), 'Ownable: caller is not the owner')
+                await expectRevert(collectionTokenInstance.mintCollection(tokenMetadataURIs, { from: user }), 'Not owner')
             })
 
             it('should not mint more than the supply', async () => {
                 const maxSupply = await collectionTokenInstance.maxSupply()
                 expectBN(maxSupply, tokenMetadataURIs.length)
 
-                await collectionTokenInstance.mintCollection()
-                await expectRevert(collectionTokenInstance.mintCollection({ from: owner }), 'Unable to mint more items')
+                await collectionTokenInstance.mintCollection(tokenMetadataURIs)
+                await expectRevert(collectionTokenInstance.mintCollection(tokenMetadataURIs, { from: owner }), 'Unable to mint more items')
             })
         })
     })

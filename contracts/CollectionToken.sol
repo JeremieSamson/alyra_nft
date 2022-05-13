@@ -4,7 +4,6 @@ pragma solidity 0.8.13;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 
 /**
  * @title Nft Collection Token Contract
@@ -13,11 +12,16 @@ import "@openzeppelin/contracts/access/Ownable.sol";
  *
  * @notice This contract manages the collection tokens
  */
-contract CollectionToken is ERC721Enumerable, ERC721URIStorage, Ownable {
+contract CollectionToken is ERC721Enumerable, ERC721URIStorage {
     /**
      * @dev Initial max supply
      */
     uint public maxSupply = 3;
+
+    /**
+     * @dev Collection owner
+     */
+    address public collectionOwner;
 
     /**
      * @dev Base URI
@@ -47,13 +51,20 @@ contract CollectionToken is ERC721Enumerable, ERC721URIStorage, Ownable {
      * @param _marketContractAddress Market contract address
      */
     constructor(
+        address _collectionOwner,
         string memory _collectionName,
         string memory _collectionSymbol,
         string memory _newBaseURI,
         address _marketContractAddress
     ) ERC721(_collectionName, _collectionSymbol) {
+        collectionOwner = _collectionOwner;
         baseURI = _newBaseURI;
         marketContractAddress = _marketContractAddress;
+    }
+
+    modifier isOwner {
+        require(msg.sender == collectionOwner, "Not owner");
+        _;
     }
 
     /**
@@ -61,7 +72,8 @@ contract CollectionToken is ERC721Enumerable, ERC721URIStorage, Ownable {
      *
      * @param _maxSupply New max supply
      */
-    function setMaxSupply(uint _maxSupply) external onlyOwner {
+    function setMaxSupply(uint _maxSupply) external isOwner {
+        require(msg.sender == collectionOwner, "Not owner");
         maxSupply = _maxSupply;
     }
 
@@ -70,7 +82,7 @@ contract CollectionToken is ERC721Enumerable, ERC721URIStorage, Ownable {
      *
      * @param _marketContractAddress New market contract address
      */
-    function setMarketContractAddress(address _marketContractAddress) external onlyOwner {
+    function setMarketContractAddress(address _marketContractAddress) external isOwner {
         require(_marketContractAddress != address(0), "Address not valid");
 
         marketContractAddress = _marketContractAddress;
@@ -81,7 +93,7 @@ contract CollectionToken is ERC721Enumerable, ERC721URIStorage, Ownable {
      *
      * @return Base URI
      */
-    function getBaseURI() external view onlyOwner returns (string memory) {
+    function getBaseURI() external view isOwner returns (string memory) {
         return baseURI;
     }
 
@@ -90,14 +102,14 @@ contract CollectionToken is ERC721Enumerable, ERC721URIStorage, Ownable {
      *
      * @param _newBaseURI New base URI
      */
-    function setBaseURI(string memory _newBaseURI) external onlyOwner {
+    function setBaseURI(string memory _newBaseURI) external isOwner {
         baseURI = _newBaseURI;
     }
 
     /**
      * @notice Mint the whole collection
      */
-    function mintCollection(string[] memory tokenMetadataURIs) public onlyOwner {
+    function mintCollection(string[] memory tokenMetadataURIs) public isOwner {
         uint totalSupply = totalSupply();
         // string[3] memory tokenMetadataURIs = [
         //     "mojo-jojo.json",

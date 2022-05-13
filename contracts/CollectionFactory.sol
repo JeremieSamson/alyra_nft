@@ -23,9 +23,10 @@ contract CollectionFactory {
         string memory _baseURI,
         address _marketContractAddress
     ) external returns (address collectionAddress) {
-        CollectionToken newCollection = new CollectionToken(_collectionName, _collectionSymbol, _baseURI, _marketContractAddress);
+        CollectionToken newCollection = new CollectionToken(msg.sender, _collectionName, _collectionSymbol, _baseURI, _marketContractAddress);
 
+        collectionAddress = address(newCollection);
         emit NFTCollectionCreated(_collectionName, collectionAddress, block.timestamp);
-        address(newCollection);
+        return collectionAddress;
     }
 }
