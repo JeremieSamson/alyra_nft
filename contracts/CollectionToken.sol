@@ -41,10 +41,17 @@ contract CollectionToken is ERC721Enumerable, ERC721URIStorage, Ownable {
     /**
      * @notice The constructor
      *
+     * @param _collectionName Collection name
+     * @param _collectionSymbol Collection symbol
      * @param _newBaseURI Base URI => ipfs://<CID>/
      * @param _marketContractAddress Market contract address
      */
-    constructor(string memory _newBaseURI, address _marketContractAddress) ERC721("Crypto Brothers", "CB") {
+    constructor(
+        string memory _collectionName,
+        string memory _collectionSymbol,
+        string memory _newBaseURI,
+        address _marketContractAddress
+    ) ERC721(_collectionName, _collectionSymbol) {
         baseURI = _newBaseURI;
         marketContractAddress = _marketContractAddress;
     }
@@ -90,13 +97,13 @@ contract CollectionToken is ERC721Enumerable, ERC721URIStorage, Ownable {
     /**
      * @notice Mint the whole collection
      */
-    function mintCollection() public onlyOwner {
+    function mintCollection(string[] memory tokenMetadataURIs) public onlyOwner {
         uint totalSupply = totalSupply();
-        string[3] memory tokenMetadataURIs = [
-            "mojo-jojo.json",
-            "morpheus.json",
-            "biggie.json"
-        ];
+        // string[3] memory tokenMetadataURIs = [
+        //     "mojo-jojo.json",
+        //     "morpheus.json",
+        //     "biggie.json"
+        // ];
         require(totalSupply < maxSupply, "Unable to mint more items");
 
         for (uint i = 0; i < tokenMetadataURIs.length; i++) {
