@@ -1,7 +1,8 @@
-import React, {Component, useState} from 'react'
+import React, {Component} from 'react'
 import getWeb3 from "../getWeb3";
 import {NotificationManager} from "react-notifications";
 import Contract from "../contracts/SimpleStorage.json";
+import {StateContext} from "./StateContext";
 
 class ConnectButton extends Component {
     constructor(props) {
@@ -10,8 +11,9 @@ class ConnectButton extends Component {
         this.handleLogout = this.handleLogout.bind(this);
         this.accountChangedHandler = this.accountChangedHandler.bind(this);
         this.chainChangedHandler = this.chainChangedHandler.bind(this);
-        this.state = JSON.parse(window.localStorage.getItem('state')) || {
-            accounts: null,
+        console.log(StateContext.accounts);
+        this.state = {
+            accounts: StateContext.accounts || null,
         }
     }
 
@@ -44,7 +46,9 @@ class ConnectButton extends Component {
             );
 
             super.setState({accounts: accounts, contract: contract});
-            window.localStorage.setItem('state', JSON.stringify({accounts: accounts, contract: contract}));
+            StateContext.accounts = accounts;
+            console.log(StateContext.accounts);
+            //window.localStorage.setItem('state', JSON.stringify({accounts: accounts, contract: contract}));
         } catch (error) {
             // Catch any errors for any of the above operations.
             alert(

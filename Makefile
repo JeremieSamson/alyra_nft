@@ -91,7 +91,7 @@ eslintfix:
 react-build: truffle-compile
 	$(REACT_NPM) run build
 
-react-start: truffle-compile
+react-start: up truffle-compile
 	$(REACT_NPM) run start
 
 react-test: truffle-compile
