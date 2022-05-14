@@ -1,4 +1,5 @@
 const CollectionToken = artifacts.require('CollectionToken')
+const CollectionFactory = artifacts.require('CollectionFactory')
 const CollectionMarket = artifacts.require('CollectionMarket')
 const { expect } = require('chai')
 const { BN, expectRevert, expectEvent, ether, constants } = require('@openzeppelin/test-helpers')
@@ -22,8 +23,16 @@ contract('Collection market test', accounts => {
     describe('CollectionMarket', () => {
         beforeEach(async () => {
             collectionMarketInstance = await CollectionMarket.new({ from: owner })
-            collectionTokenInstance = await CollectionToken.new(baseUri, collectionMarketInstance.address, { from: owner })
-            await collectionTokenInstance.mintCollection()
+            collectionFactoryInstance = await CollectionFactory.new({ from: owner })
+            const tx = await collectionFactoryInstance.createNFTCollection(
+                'Crypto Brothers',
+                'CP',
+                baseUri,
+                collectionMarketInstance.address, { from: owner }
+            )
+            collectionAddress = tx.logs[0].args[1]
+            collectionTokenInstance = await CollectionToken.at(collectionAddress)
+            await collectionTokenInstance.mintCollection(tokenMetadataURIs)
         })
 
         context('Add Item', () => {
