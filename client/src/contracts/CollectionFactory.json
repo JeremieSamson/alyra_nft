@@ -5452,12 +5452,12 @@
     "1652538770593": {
       "events": {},
       "links": {},
-      "address": "0x26aA1EA2761f627bd6356f85757F9652f024Dd80",
-      "transactionHash": "0xd0e2e64aafdeaa3a539dd3d967cb6b63141dc658f5b8fd876257c51b4aea7234"
+      "address": "0xbf67936b35d69D970B0F52e2aB81B3b1B7144803",
+      "transactionHash": "0xf7d8cae8bf6bd4ed912297794ded5c2e4bf8c1c496269488e1669b65d2f78ee6"
     }
   },
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-05-14T16:52:11.099Z",
+  "updatedAt": "2022-05-14T16:54:02.870Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "If the contract is already deployed for an _collectionName, it will revert.",

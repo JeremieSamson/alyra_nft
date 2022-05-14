@@ -52,7 +52,7 @@ class Footer extends Component {
 
                     <div className="text-center p-4">
                         © 2022 Copyright:
-                        <a className="text-reset fw-bold" href="#">CryptoBrothers</a>
+                        CryptoBrothers
                     </div>
                 </footer>
             </>

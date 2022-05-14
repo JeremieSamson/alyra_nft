@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
-import { Navbar, Nav, Container, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 import ConnectButton from "./ConnectButton";
 
 class TopBar extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
           <>

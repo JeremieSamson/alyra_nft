@@ -1,7 +1,23 @@
 [
   {
-    "tokenId": 1,
-    "owner": "0x52bf3f5Db0C1c520024046d09E95C012Af52B1F9",
-    "tokenURI": "https://ipfs.io/ipfs/QmQqzMTavQgT4f4T5v6PWBp7XNKtoPmC9jvn12WPT3gkSE"
+    "name": "Notorious BIG",
+    "description": "This is a picture of the notorious B.I.G.",
+    "image": "ipfs://QmZSppR7sn2bwVNvezwY5628s3DnNGVSLNNNRyF9VyGwpj/biggie.jpg",
+    "pinata_url": "https://gateway.pinata.cloud/ipfs/QmZSppR7sn2bwVNvezwY5628s3DnNGVSLNNNRyF9VyGwpj/biggie.jpg",
+    "metadata": "biggie.json"
+  },
+  {
+    "name": "Mojo Jojo",
+    "description": "This is a picture of the mad Mojo Jojo",
+    "image": "ipfs://QmZSppR7sn2bwVNvezwY5628s3DnNGVSLNNNRyF9VyGwpj/mojo-jojo.jpg",
+    "pinata_url": "https://gateway.pinata.cloud/ipfs/QmZSppR7sn2bwVNvezwY5628s3DnNGVSLNNNRyF9VyGwpj/mojo-jojo.jpg",
+    "metadata": "Mojo-Jojo.json"
+  },
+  {
+    "name": "Morpheus",
+    "description": "This is a picture of the badass Morpheus from Matrix",
+    "image": "ipfs://QmZSppR7sn2bwVNvezwY5628s3DnNGVSLNNNRyF9VyGwpj/morpheus.jpg",
+    "pinata_url": "https://gateway.pinata.cloud/ipfs/QmZSppR7sn2bwVNvezwY5628s3DnNGVSLNNNRyF9VyGwpj/morpheus.jpg",
+    "metadata": "morpheus.json"
   }
 ]

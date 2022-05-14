@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import getWeb3 from "../getWeb3";
 
 class Card extends Component {
     constructor(props) {
@@ -19,8 +18,6 @@ class Card extends Component {
 
     async handleBuyButton() {
         try {
-            const web3 = await getWeb3();
-            const workflowStatus = await this.state.contract.methods.get().call({from: this.state.accounts[0]});
 
         } catch (error) {
             // Catch any errors for any of the above operations.

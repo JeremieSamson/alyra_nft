@@ -21,7 +21,7 @@ class Nfts extends Component {
             if (this.state.query === null || this.state.query === '') {
                 return nft;
             } else {
-                return nft.title.toLowerCase().includes(this.state.query.toLowerCase())
+                return nft.name.toLowerCase().includes(this.state.query.toLowerCase())
             }
         })
 
@@ -40,8 +40,8 @@ class Nfts extends Component {
                     </div>
                     <div className="row row-cols-1 row-cols-md-3 g-4">
                         {filteredCollections.map((item) => (
-                            <div className="col" key={item.id}>
-                                <NFTItem imageSrc={item.tokenURI} title={item.tokenId} owner={item.owner} id={item.tokenId}/>
+                            <div className="col" key={item.name}>
+                                <NFTItem imageSrc={item.image} title={item.name} owner={item.owner} description={item.description} path={item.metadata}/>
                             </div>
                         ))}
                     </div>

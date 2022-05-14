@@ -10,43 +10,48 @@ import Authors from "./components/Authors";
 import {NotificationContainer} from "react-notifications";
 import MyNFT from "./components/MyNFT";
 import Nfts from "./components/Nfts";
-import {StateContext} from "./components/StateContext";
+import {CurrentAccountContext} from "./components/CurrentAccountContext";
 import NewCollection from "./components/NewCollection";
 import PinataUpload from "./components/PinataUpload";
+import MyCollections from "./components/MyCollections";
 
 class App extends Component {
     
   runExample = async () => {
-    // const { accounts, contract } = this.state;
-    //
-    // // Stores a given value, 5 by default.
-    // await contract.methods.set(5).send({ from: accounts[0] });
-    //
-    // // Get the value from the contract to prove it worked.
-    // const response = await contract.methods.get().call();
-    //
-    // // Update state with the result.
-    // this.setState({ storageValue: response });
+    const { accounts, contract } = this.state;
+
+    // Stores a given value, 5 by default.
+    await contract.methods.set(5).send({ from: accounts[0] });
+
+    // Get the value from the contract to prove it worked.
+    const response = await contract.methods.get().call();
+
+    // Update state with the result.
+    this.setState({ storageValue: response });
   };
 
   render() {
       return (
           <div className="App">
-              <StateContext.Provider value="state">
+              <CurrentAccountContext.Provider value="">
                 <NotificationContainer/>
                 <TopBar/>
                 <BrowserRouter>
                   <Routes>
                       <Route exact path='/' element={<Home />}/>
                       <Route exact path='/my-nft' element={<MyNFT />}/>
-                      <Route path='collections' element={<Collections />}/>
-                      <Route path='collection' element={<Nfts />}>
-                          <Route path=":collectionId" element={<Nfts />} />
+                      <Route path='collections'>
+                          <Route exact path='new' element={<NewCollection />}/>
+                          <Route exact path="mint" element={<MyCollections />}/>
+                          <Route path=":collectionId" element={<Nfts />}>
+                              <Route path="create" element={<Nfts />}/>
+                          </Route>
                       </Route>
                       <Route exact path='/team' element={<Authors />}/>
                       <Route exact path='/contact' element={<Contact />}/>
                       <Route exact path='/pinata' element={<PinataUpload />}/>
-                      <Route exact path='/collection/new' element={<NewCollection />}/>
+
+
                       <Route
                           path="*"
                           element={
@@ -58,7 +63,7 @@ class App extends Component {
                   </Routes>
                 </BrowserRouter>
                 <Footer />
-              </StateContext.Provider>
+              </CurrentAccountContext.Provider>
           </div>
       );
   }

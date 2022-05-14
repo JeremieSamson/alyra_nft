@@ -1,22 +1,21 @@
 import React, { Component } from 'react'
-import FormData from 'form-data';
-import axios from 'axios';
 import {NotificationManager} from "react-notifications";
 import CollectionFactory from "../contracts/CollectionFactory.json";
 import CollectionMarket from "../contracts/CollectionMarket.json";
+import CollectionToken from "../contracts/CollectionToken.json";
 import getWeb3 from "../getWeb3";
 
 class NewCollection extends Component {
     constructor(props) {
         super(props);
 
-        this.handleFile = this.handleFile.bind(this);
         this.handleCreateCollection = this.handleCreateCollection.bind(this);
 
         this.state = {
             url: '',
             name: '',
             symbol: '',
+            collectionAddress: '',
         }
     }
 
@@ -38,40 +37,21 @@ class NewCollection extends Component {
                 deployedNetworkFactory && deployedNetworkFactory.address,
             );
 
-            console.log(instanceMarketPlace.options.address);
+            const collectionAddress = await instanceFactory.methods.createNFTCollection(this.state.name, this.state.symbol, this.state.url, instanceMarketPlace.options.address).call({from: accounts[0]});
+            //
+            // const deployedCollectionToken = CollectionToken.networks[networkId];
+            // const instanceCollectionToken = new web3.eth.Contract(
+            //     CollectionToken.abi,
+            //     deployedCollectionToken && deployedCollectionToken.address,
+            // );
+            //
+            // await instanceCollectionToken.methods.setBaseURI(this.state.url).call({from: accounts[0]});
 
-            instanceFactory.methods.createNFTCollection(this.state.name, this.state.symbol, this.state.url, instanceMarketPlace.options.address).call({from: accounts[0]});
+            this.setState({collectionAddress: collectionAddress});
+
+            NotificationManager.success('Collection successfully created', '', 5000);
         }catch (error) {
             console.log(error);
-        }
-    }
-
-    async handleFile(e) {
-        e.preventDefault();
-
-        try {
-            const formData = new FormData()
-            formData.append("file", this.state.file)
-
-            const response = await axios.post(
-                `https://api.pinata.cloud/pinning/pinFileToIPFS`,
-                formData,
-                {
-                    maxContentLength: "Infinity",
-                    headers: {
-                        "Content-Type": `multipart/form-data;boundary=${formData._boundary}`,
-                        'pinata_api_key': process.env.REACT_APP_PINATA_API_KEY,
-                        'pinata_secret_api_key': process.env.REACT_APP_PINATA_API_SECRET
-
-                    }
-                }
-            )
-
-            this.setState({myipfsHash: response.data.IpfsHash})
-
-            NotificationManager.success('Image successfully uploaded to IPFS through Pinata with ipfshas '+response.data.IpfsHash, '', 5000);
-        } catch (error) {
-            console.log(error)
         }
     }
 
@@ -107,7 +87,8 @@ class NewCollection extends Component {
                     onChange={(event) => this.state.url = event.target.value}
                 />
 
-                <button className="btn btn-success mt-5" onClick={this.handleCreateCollection}>Create collection</button>
+                <button className="btn btn-success mt-5" onClick={this.handleCreateCollection}>Create collection</button><br/>
+                { this.state.collectionAddress.length > 0 ? <a className="btn btn-success" href={`/collections/${this.state.collectionAddress}/create`}>Create your NFTs</a> : ''}
             </div>
         </div>;
     }
