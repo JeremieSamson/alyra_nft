@@ -75,7 +75,7 @@ class ConnectButton extends Component {
             <>
                 {
                     this.state.accounts>0
-                        ? <span><a href="/my-nft">My NFTs</a>&nbsp;&nbsp;<a href="" onClick={this.handleLogout}>Log out</a></span>
+                        ? <span><a href="/collection/new">Create Collection</a>&nbsp;&nbsp;<a href="/my-nft">My NFTs</a>&nbsp;&nbsp;<a href="" onClick={this.handleLogout}>Log out</a></span>
                         : <a href="#" onClick={this.handleConnectWallet}>Sign In</a>
                 }
             </>
