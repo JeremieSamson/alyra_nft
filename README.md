@@ -8,7 +8,7 @@
 
 - Contract is deployed here: [CollectionMarket](https://ropsten.etherscan.io/address/0x880E23Ac9Ede165C4FE1eCECC2DDc326287b0331) and [CollectionFactory](https://ropsten.etherscan.io/address/0x66569C50ad60F11D5E08c4E87533198Bd318B795)
 - App is deployed here: [https://alyranft.herokuapp.com](https://alyranft.herokuapp.com/)
-- Demo is available here:
+- Demo is available here: [Loom](https://www.loom.com/share/990ba29316514d5cae3b736ea2989f7a)
 
 ## Development
 
