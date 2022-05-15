@@ -19567,12 +19567,12 @@
         }
       },
       "links": {},
-      "address": "0x3a58871c7fB1215cfe88D5Abb12C717D2B3D5266",
-      "transactionHash": "0x89d966f51ebfb33b0fd70dd8981931ba399aa0e73d51336a224fb4c80c493299"
+      "address": "0x2b694a437534eF42D1F2Ee680393692B764D5206",
+      "transactionHash": "0x503f22dc1e25a49098141dd22939260bf37fd0458fec4dcbc9a53fb05774490e"
     }
   },
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-05-15T15:02:12.301Z",
+  "updatedAt": "2022-05-15T17:49:33.795Z",
   "networkType": "ethereum",
   "devdoc": {
     "author": "Jonacity",

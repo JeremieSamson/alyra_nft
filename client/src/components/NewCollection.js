@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import {NotificationManager} from "react-notifications";
 import CollectionFactory from "../contracts/CollectionFactory.json";
 import CollectionMarket from "../contracts/CollectionMarket.json";
-import CollectionToken from "../contracts/CollectionToken.json";
 import getWeb3 from "../getWeb3";
 
 class NewCollection extends Component {

@@ -33,13 +33,9 @@ class Nfts extends Component {
                 deployedNetwork && deployedNetwork.address,
             );
 
-            /*for (let i=1 ; i<=this.state.maxSupply ; i++) {
-                await collectionMarketContract.methods.addItem(this.state.address, 1, 1000000).send({from: accounts[0]});
-            }*/
-            await collectionMarketContract.methods.addItem(this.state.address, 1, 1000000).send({from: accounts[0]});
-            await collectionMarketContract.methods.addItem(this.state.address, 2, 1000000).send({from: accounts[0]});
-            await collectionMarketContract.methods.addItem(this.state.address, 3, 1000000).send({from: accounts[0]});
-
+            for (let i=1 ; i<=this.state.maxSupply ; i++) {
+                await collectionMarketContract.methods.addItem(this.state.address, i, 1000000).send({from: accounts[0]});
+            }
 
             NotificationManager.success('Collection added to the marketplace', '', 5000);
 
@@ -87,7 +83,6 @@ class Nfts extends Component {
     }
 
     render() {
-
         return (
             <>
                 <div className="container mt-5 mb-5">

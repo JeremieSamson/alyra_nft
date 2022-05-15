@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import getWeb3 from "../getWeb3";
 import CollectionMarket from "../contracts/CollectionMarket.json";
 import MintedNFTItem from "./MintedNFTItem";
+import CollectionToken from "../contracts/CollectionToken.json";
 
 class MyNFT extends Component {
     constructor(props) {
@@ -9,7 +10,8 @@ class MyNFT extends Component {
         this.handleSearch = this.handleSearch.bind(this);
         this.state = {
             query: null,
-            nfts: []
+            nfts: [],
+            isLoading: true
         };
     }
 
@@ -26,8 +28,12 @@ class MyNFT extends Component {
             );
 
             const nfts = await collectionMarketContract.methods.getSenderItems().call({from: accounts[0]});
-            console.log(nfts);
-            this.setState({nfts: nfts});
+
+            for (const nft of nfts) {
+                await this.loadNftExtendedData(nft, web3);
+            }
+
+            this.setState({isLoading: false});
         } catch (error) {
             // Catch any errors for any of the above operations.
             alert(
@@ -37,28 +43,63 @@ class MyNFT extends Component {
         }
     };
 
+    async loadNftExtendedData(nft, web3) {
+        const nftExtended = {};
+
+        const collection = new web3.eth.Contract(
+            CollectionToken.abi,
+            nft.tokenContractAddress,
+        );
+
+        nftExtended.owner = nft.owner;
+        nftExtended.itemId = nft.itemId;
+        nftExtended.price = nft.price;
+        nftExtended.seller = nft.seller;
+        nftExtended.tokenId = nft.tokenId;
+        nftExtended.tokenContractAddress = nft.tokenContractAddress;
+
+        const ipfsPath = await collection.methods.tokenURI(nft.tokenId).call();
+        nftExtended.tokenUri = ipfsPath.replace('ipfs://', 'https://gateway.pinata.cloud/ipfs/');
+        nftExtended.maxSupply = await collection.methods.maxSupply().call();
+
+        await fetch(nftExtended.tokenUri)
+            .then(response => response.json())
+            .then((jsonData) => {
+                nftExtended.name = jsonData.name;
+                nftExtended.description = jsonData.description;
+                nftExtended.image = jsonData.pinata_url;
+            })
+            .then((jsonData) => {
+                this.state.nfts.push(nftExtended);
+            })
+            .catch((error) => {
+                // handle your errors here
+                console.error(error)
+            })
+    }
+
     handleSearch(e) {
         this.setState({query:e.target.value});
     }
 
     render() {
-        const filteredData = this.state.nfts.filter((data) => {
-            if (this.state.query === null || this.state.query === '') {
-                return data;
-            } else {
-                return data.title.toLowerCase().includes(this.state.query.toLowerCase())
-            }
-        })
-
-        if (filteredData.length === 0) {
+        if (this.state.isLoading === true) {
             return (
                 <>
                     <div className="container mt-5 mb-5">
-                        <h1>You don't have any NFT</h1>
+                        <h1>Loading ...</h1>
                     </div>
                 </>
             );
         }
+
+        const filteredData = this.state.nfts.filter((data) => {
+            if (this.state.query === null || this.state.query === '') {
+                return data;
+            } else {
+                return data.name.toLowerCase().includes(this.state.query.toLowerCase())
+            }
+        })
 
         return (
             <>
@@ -77,12 +118,15 @@ class MyNFT extends Component {
                         {filteredData.map((item) => (
                             <div className="col">
                                 <MintedNFTItem
-                                    itemId={item.itemId}
-                                    owner={item.owner}
+                                    title={item.name}
                                     price={item.price}
+                                    itemId={item.itemId}
+                                    tokenId={item.tokenId}
+                                    owner={item.owner}
                                     seller={item.seller}
                                     tokenContractAddress={item.tokenContractAddress}
-                                    tokenId={item.tokenId}
+                                    description={item.description}
+                                    image={item.image}
                                 />
                             </div>
                         ))}

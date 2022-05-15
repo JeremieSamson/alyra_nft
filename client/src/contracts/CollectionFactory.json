@@ -5631,12 +5631,12 @@
     "1652621317166": {
       "events": {},
       "links": {},
-      "address": "0x2837fa489e12AF451deE5b9c0e39950FffAb7163",
-      "transactionHash": "0x836a940653cf264dfdbee3646c45e16f5c7b396a32b6ae64abe3d3f798bec72a"
+      "address": "0x61E53f04e435b7821D86E9498a267d81a4f44501",
+      "transactionHash": "0x7ba76045d4a3cefc739c117b3efe2dfa1e238c03c40ada9bae4c852effef8d39"
     }
   },
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-05-15T15:02:12.296Z",
+  "updatedAt": "2022-05-15T17:49:33.790Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "If the contract is already deployed for an _collectionName, it will revert.",

@@ -38,9 +38,10 @@ class UnsoldNFTItem extends Component {
         return (
             <>
                 <div className="card">
-                    {/*<img src={imageSrc} className="card-img-top" alt={this.props.title}/>*/}
+                    <img src={this.props.image} className="card-img-top" alt={this.props.title}/>
                     <div className="card-body">
-                        <h5 className="card-title">{this.props.itemId} ({this.props.price} wei)</h5>
+                        <h5 className="card-title">{this.props.title} ({this.props.price} wei)</h5>
+                        <p className="card-text">{this.props.description}</p>
 
                         <button className="btn btn-success" onClick={this.handleBuy}>Buy</button>
                     </div>

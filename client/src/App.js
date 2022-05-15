@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from "./components/Home";
 import TopBar from "./components/TopBar";
 import "./App.css";
 import Collections from "./components/Collections";
@@ -11,7 +10,6 @@ import {NotificationContainer} from "react-notifications";
 import MyNFT from "./components/MyNFT";
 import Nfts from "./components/Nfts";
 import NewCollection from "./components/NewCollection";
-import PinataUpload from "./components/PinataUpload";
 import CollectionFactory from "./contracts/CollectionFactory.json";
 import CollectionToken from "./contracts/CollectionToken.json";
 import getWeb3 from "./getWeb3";
@@ -111,7 +109,7 @@ class App extends Component {
                 CollectionToken.abi,
                 address,
             );
-console.log('nani');
+
             collectionToken.getPastEvents('allEvents', {
                 fromBlock: 0,
                 toBlock: 'latest'
@@ -145,7 +143,6 @@ console.log('nani');
             <TopBar/>
             <BrowserRouter>
               <Routes>
-                  <Route exact path='/' element={<Home />}/>
                   <Route exact path='/my-nft' element={<MyNFT />}/>
                   <Route exact path='/collections' element={<Collections collections={this.state.collections}/>}/>
                   <Route path='collections'>
@@ -156,7 +153,6 @@ console.log('nani');
                   </Route>
                   <Route exact path='/team' element={<Authors />}/>
                   <Route exact path='/contact' element={<Contact />}/>
-                  <Route exact path='/pinata' element={<PinataUpload />}/>
 
                   <Route
                       path="*"

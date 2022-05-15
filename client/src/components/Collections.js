@@ -1,9 +1,8 @@
-import React, { Component } from 'react'
-import CollectionItem from "./CollectionItem";
+import React, {Component} from 'react'
 import getWeb3 from "../getWeb3";
 import CollectionMarket from "../contracts/CollectionMarket.json";
-import NFTItem from "./NFTItem";
 import UnsoldNFTItem from "./UnsoldNftItem";
+import CollectionToken from "../contracts/CollectionToken.json";
 
 class Collections extends Component {
     constructor(props) {
@@ -12,7 +11,8 @@ class Collections extends Component {
 
         this.state = {
             query: null,
-            nfts: null,
+            nfts: [],
+            isLoading: true
         }
     }
 
@@ -28,22 +28,63 @@ class Collections extends Component {
             );
 
             const nfts = await collectionMarketContract.methods.getUnsoldItems().call();
-            this.setState({nfts: nfts});
+
+            for (const nft of nfts) {
+                await this.loadNftExtendedData(nft, web3);
+            }
+
+            this.setState({isLoading: false});
         } catch (error) {
             console.error(error);
         }
     };
+
+    async loadNftExtendedData(nft, web3) {
+        const nftExtended = {};
+
+        const collection = new web3.eth.Contract(
+            CollectionToken.abi,
+            nft.tokenContractAddress,
+        );
+
+        nftExtended.owner = nft.owner;
+        nftExtended.itemId = nft.itemId;
+        nftExtended.price = nft.price;
+        nftExtended.seller = nft.seller;
+        nftExtended.tokenId = nft.tokenId;
+        nftExtended.tokenContractAddress = nft.tokenContractAddress;
+
+        const ipfsPath = await collection.methods.tokenURI(nft.tokenId).call();
+        nftExtended.tokenUri = ipfsPath.replace('ipfs://', 'https://gateway.pinata.cloud/ipfs/');
+        nftExtended.maxSupply = await collection.methods.maxSupply().call();
+
+        await fetch(nftExtended.tokenUri)
+            .then(response => response.json())
+            .then((jsonData) => {
+
+                nftExtended.name = jsonData.name;
+                nftExtended.description = jsonData.description;
+                nftExtended.image = jsonData.pinata_url;
+            })
+            .then((jsonData) => {
+                this.state.nfts.push(nftExtended);
+            })
+            .catch((error) => {
+                // handle your errors here
+                console.error(error)
+            })
+    }
 
     handleSearch(e) {
         this.setState({query:e.target.value});
     }
 
     render() {
-        if (!Array.isArray(this.state.nfts)) {
+        if (this.state.isLoading === true) {
             return (
                 <>
                     <div className="container mt-5 mb-5">
-                        <h1>There is no collection yet</h1>
+                        <h1>Loading ...</h1>
                     </div>
                 </>
             );
@@ -53,9 +94,19 @@ class Collections extends Component {
             if (this.state.query === null || this.state.query === '') {
                 return collection;
             } else {
-                return collection.title.toLowerCase().includes(this.state.query.toLowerCase())
+                return collection.name.toLowerCase().includes(this.state.query.toLowerCase())
             }
         })
+
+        if (filteredCollections.length === 0) {
+            return (
+                <>
+                    <div className="container mt-5 mb-5">
+                        <h1>There is no collection</h1>
+                    </div>
+                </>
+            );
+        }
 
         return (
             <>
@@ -72,8 +123,16 @@ class Collections extends Component {
                     </div>
                     <div className="row row-cols-1 row-cols-md-3 g-4">
                         {filteredCollections.map((item) => (
-                            <div className="col" key={item.itemId}>
-                                <UnsoldNFTItem title={item.tokenContractAddress} price={item.price} itemId={item.itemId} tokenContractAddress={item.tokenContractAddress}/>
+                            <div className="col" key={item.tokenId}>
+                                <UnsoldNFTItem
+                                    title={item.name}
+                                    price={item.price}
+                                    itemId={item.itemId}
+                                    tokenId={item.tokenId}
+                                    tokenContractAddress={item.tokenContractAddress}
+                                    description={item.description}
+                                    image={item.image}
+                                />
                             </div>
                         ))}
                     </div>
