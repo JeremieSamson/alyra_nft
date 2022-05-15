@@ -3,6 +3,7 @@ import Card from "./Card";
 import getWeb3 from "../getWeb3";
 import {NotificationManager} from "react-notifications";
 import CollectionMarket from "../contracts/CollectionMarket.json";
+import MintedNFTItem from "./MintedNFTItem";
 
 class MyNFT extends Component {
     constructor(props) {
@@ -27,6 +28,7 @@ class MyNFT extends Component {
             );
 
             const nfts = await collectionMarketContract.methods.getSenderItems().call({from: accounts[0]});
+            console.log(nfts);
             this.setState({nfts: nfts});
         } catch (error) {
             // Catch any errors for any of the above operations.
@@ -63,6 +65,7 @@ class MyNFT extends Component {
         return (
             <>
                 <div className="container mt-5 mb-5">
+                    <h1>Your NFT Collection</h1>
                     <div className="input-group rounded searchInput">
                         <input type="search" className="form-control rounded" placeholder="Search" aria-label="Search"
                                aria-describedby="search-addon"
@@ -75,7 +78,14 @@ class MyNFT extends Component {
                     <div className="row row-cols-1 row-cols-md-3 g-4">
                         {filteredData.map((item) => (
                             <div className="col">
-                                <Card imageSrc={item.tokenURI} title={item.tokenId} owner={item.owner}/>
+                                <MintedNFTItem
+                                    itemId={item.itemId}
+                                    owner={item.owner}
+                                    price={item.price}
+                                    seller={item.seller}
+                                    tokenContractAddress={item.tokenContractAddress}
+                                    tokenId={item.tokenId}
+                                />
                             </div>
                         ))}
                     </div>

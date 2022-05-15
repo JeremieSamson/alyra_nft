@@ -37,15 +37,8 @@ class NewCollection extends Component {
                 deployedNetworkFactory && deployedNetworkFactory.address,
             );
 
-            const collectionAddress = await instanceFactory.methods.createNFTCollection(this.state.name, this.state.symbol, this.state.url, instanceMarketPlace.options.address).call({from: accounts[0]});
-            //
-            // const deployedCollectionToken = CollectionToken.networks[networkId];
-            // const instanceCollectionToken = new web3.eth.Contract(
-            //     CollectionToken.abi,
-            //     deployedCollectionToken && deployedCollectionToken.address,
-            // );
-            //
-            // await instanceCollectionToken.methods.setBaseURI(this.state.url).call({from: accounts[0]});
+            const result = await instanceFactory.methods.createNFTCollection(this.state.name, this.state.symbol, this.state.url, instanceMarketPlace.options.address).send({from: accounts[0]});
+            const collectionAddress = result.events.NFTCollectionCreated.returnValues[1]
 
             this.setState({collectionAddress: collectionAddress});
 

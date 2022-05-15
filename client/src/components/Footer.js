@@ -23,10 +23,10 @@ class Footer extends Component {
                                         Useful links
                                     </h6>
                                     <p>
-                                        <a href="home" className="text-reset">Home</a>
+                                        <a href="/" className="text-reset">Home</a>
                                     </p>
                                     <p>
-                                        <a href="explore" className="text-reset">Explore</a>
+                                        <a href="/collections" className="text-reset">Explore</a>
                                     </p>
                                     <p>
                                         <a href="team" className="text-reset">Team</a>

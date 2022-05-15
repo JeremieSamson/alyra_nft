@@ -16,7 +16,6 @@ class NFTItem extends Component {
         try {
             const web3 = await getWeb3();
             const accounts = await web3.eth.getAccounts();
-            const networkId = await web3.eth.net.getId();
 
             // @ToDo find a better way to do it
             let pathname = window.location.pathname;
@@ -26,7 +25,7 @@ class NFTItem extends Component {
                 CollectionToken.abi,
                 address,
             );
-            const baseUri = await collection.methods.getBaseURI().call({from: accounts[0]});
+            const baseUri = await collection.methods.mintCollection([this.props.path]).send({from: accounts[0]});
             console.log(baseUri);
             //await instanceCollectionToken.methods.mintCollection([this.props.path]).call({from: accounts[0]});
 

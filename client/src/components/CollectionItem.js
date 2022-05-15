@@ -5,14 +5,19 @@ class CollectionItem extends Component {
     render() {
         return (
             <>
-                <Link to={`/collection/${this.props.id}`}>
-                <div className="card">
-                    <img src={this.props.imageSrc} className="card-img-top" alt={this.props.title}/>
-                    <div className="card-body">
-                        <h5 className="card-title">{this.props.title}</h5>
-                        <p className="card-text">{this.props.description}</p>
+                <Link to={{
+                    pathname: `/collections/${this.props.id}`,
+                    props: { owner: this.props.owner, title: this.props.title}
+                }}>
+                    <div className="card">
+                        <div className="card-body">
+                            <h5 className="card-title">{this.props.title}</h5>
+                            <p className="card-text">
+                                Address: {this.props.address}<br/>
+                                Owner: {this.props.address}
+                            </p>
+                        </div>
                     </div>
-                </div>
                 </Link>
             </>
         );

@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import CollectionItem from "./CollectionItem";
 import getWeb3 from "../getWeb3";
 import CollectionMarket from "../contracts/CollectionMarket.json";
+import NFTItem from "./NFTItem";
+import UnsoldNFTItem from "./UnsoldNftItem";
 
 class Collections extends Component {
     constructor(props) {
@@ -10,14 +12,13 @@ class Collections extends Component {
 
         this.state = {
             query: null,
-            collections: []
+            nfts: null,
         }
     }
 
     async componentDidMount() {
         try {
             const web3 = await getWeb3();
-            const accounts = await web3.eth.getAccounts();
             const networkId = await web3.eth.net.getId();
 
             const deployedNetwork = CollectionMarket.networks[networkId];
@@ -26,32 +27,9 @@ class Collections extends Component {
                 deployedNetwork && deployedNetwork.address,
             );
 
-            //const collections = await collectionMarketContract.methods.getUnsoldItems().call({from: accounts[0]});
-
-            const collections = [
-                {
-                    "itemId": 1,
-                    "tokenId": 1,
-                    "price": 1,
-                    "tokenContractAddress": 1,
-                    "seller": 1,
-                    "owner": 1,
-                },
-                {
-                    "itemId": 2,
-                    "tokenId": 222,
-                    "price": 42,
-                    "tokenContractAddress": '0xZAEZAE',
-                    "seller": '',
-                    "owner": '',
-                }
-            ];
-            this.setState({collections: collections});
+            const nfts = await collectionMarketContract.methods.getUnsoldItems().call();
+            this.setState({nfts: nfts});
         } catch (error) {
-            // Catch any errors for any of the above operations.
-            alert(
-                `Failed to load web3, accounts, or contract. Check console for details.`,
-            );
             console.error(error);
         }
     };
@@ -61,15 +39,7 @@ class Collections extends Component {
     }
 
     render() {
-        const filteredCollections = this.state.collections.filter((collection) => {
-            if (this.state.query === null || this.state.query === '') {
-                return collection;
-            } else {
-                return collection.title.toLowerCase().includes(this.state.query.toLowerCase())
-            }
-        })
-
-        if (filteredCollections.length === 0) {
+        if (!Array.isArray(this.state.nfts)) {
             return (
                 <>
                     <div className="container mt-5 mb-5">
@@ -78,6 +48,14 @@ class Collections extends Component {
                 </>
             );
         }
+
+        const filteredCollections = this.state.nfts.filter((collection) => {
+            if (this.state.query === null || this.state.query === '') {
+                return collection;
+            } else {
+                return collection.title.toLowerCase().includes(this.state.query.toLowerCase())
+            }
+        })
 
         return (
             <>
@@ -94,8 +72,8 @@ class Collections extends Component {
                     </div>
                     <div className="row row-cols-1 row-cols-md-3 g-4">
                         {filteredCollections.map((item) => (
-                            <div className="col" key={item.id}>
-                                <CollectionItem imageSrc={item.imageSrc} title={item.title} owner={item.owner} id={item.id}/>
+                            <div className="col" key={item.itemId}>
+                                <UnsoldNFTItem title={item.tokenContractAddress} price={item.price} itemId={item.itemId} tokenContractAddress={item.tokenContractAddress}/>
                             </div>
                         ))}
                     </div>

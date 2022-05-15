@@ -10,7 +10,7 @@ import "./CollectionToken.sol";
   */
 contract CollectionFactory {
 
-    event NFTCollectionCreated(string _collectionName, address _collectionAddress, uint _timestamp);
+    event NFTCollectionCreated(string _collectionName, address _collectionAddress, address _owner, uint _timestamp);
 
     /**
       * @notice Deploy the ERC-721 Collection contract of the collection caller to be able to create NFTs later
@@ -26,7 +26,7 @@ contract CollectionFactory {
         CollectionToken newCollection = new CollectionToken(msg.sender, _collectionName, _collectionSymbol, _baseURI, _marketContractAddress);
 
         collectionAddress = address(newCollection);
-        emit NFTCollectionCreated(_collectionName, collectionAddress, block.timestamp);
+        emit NFTCollectionCreated(_collectionName, collectionAddress, msg.sender, block.timestamp);
         return collectionAddress;
     }
 }
