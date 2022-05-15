@@ -12,7 +12,7 @@ class Home extends Component {
                             <Author
                                 imgSrc="authors/jonathan.jpeg"
                                 name="Jonathan Siti"
-                                description="Ylly forever"
+                                description="CEO"
                                 githubLink="https://github.com/Jonacity"
                             />
                         </div>
@@ -20,7 +20,7 @@ class Home extends Component {
                             <Author
                                 imgSrc="authors/nathan.jpeg"
                                 name="Nathan L"
-                                description="Ylly forever"
+                                description="CFO"
                                 githubLink="https://github.com/NaLe3"
                             />
                         </div>
@@ -28,7 +28,7 @@ class Home extends Component {
                             <Author
                                 imgSrc="authors/jeremie.jpeg"
                                 name="Jérémie Samson"
-                                description="Ylly forever"
+                                description="CMO"
                                 githubLink="https://github.com/JeremieSamson"
                                 twitterLink="https://twitter.com/JSamson76"
                             />

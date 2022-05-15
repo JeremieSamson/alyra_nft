@@ -11,7 +11,6 @@ import MyNFT from "./components/MyNFT";
 import Nfts from "./components/Nfts";
 import NewCollection from "./components/NewCollection";
 import CollectionFactory from "./contracts/CollectionFactory.json";
-import CollectionToken from "./contracts/CollectionToken.json";
 import getWeb3 from "./getWeb3";
 import CollectionMarket from "./contracts/CollectionMarket.json";
 
@@ -38,103 +37,12 @@ class App extends Component {
                 deployedNetworkMarket && deployedNetworkMarket.address,
             );
 
-            this.setState({ collectionFactoryContract: collectionFactoryContract, collectionMarketContract: collectionMarketContract }, this.loadEvents);
+            this.setState({ collectionFactoryContract: collectionFactoryContract, collectionMarketContract: collectionMarketContract });
         } catch (error) {
             alert(`Failed to load web3, accounts, or contract. Check console for details.`,);
             console.error(error);
         }
     };
-
-    async loadEvents() {
-        let collections = this.loadNFTCollectionCreatedEvents();
-        await this.loadMarketEvents();
-
-        for(let i=0 ; i<collections.length ; i++) {
-            //console.log(i);
-        }
-    }
-
-    loadMarketEvents() {
-        let {  collectionMarketContract, collections, nfts } = this.state;
-        let app = this;
-
-        collectionMarketContract.getPastEvents('allEvents', {
-            fromBlock: 0,
-            toBlock: 'latest'
-        }, function(error, eventsData){})
-            .then(function(smartContractEvents){
-                for(let smartContractEvent of smartContractEvents) {
-                    console.log('marketevents', smartContractEvent);
-                }
-            });
-    }
-
-    loadNFTCollectionCreatedEvents() {
-        let { collectionFactoryContract, collections, nfts } = this.state;
-        let app = this;
-
-        collectionFactoryContract.getPastEvents('allEvents', {
-            fromBlock: 0,
-            toBlock: 'latest'
-        }, function(error, eventsData){})
-            .then(function(smartContractEvents){
-                for(let smartContractEvent of smartContractEvents) {
-                    console.log(smartContractEvent.event);
-                    if (smartContractEvent.event === "NFTCollectionCreated") {
-                        collections.push({
-                            title: smartContractEvent.returnValues[0],
-                            address: smartContractEvent.returnValues[1],
-                            owner: smartContractEvent.returnValues[2],
-                        });
-                    }
-                }
-            });
-
-        app.setState({
-            collections: collections,
-            nfts: nfts
-        });
-
-        return collections;
-    }
-
-    async loadTokenMintedEvents(address) {
-        let {  collections, nfts } = this.state;
-        let app = this;
-        let collectionToken = null;
-
-        try {
-            const web3 = await getWeb3();
-            collectionToken = new web3.eth.Contract(
-                CollectionToken.abi,
-                address,
-            );
-
-            collectionToken.getPastEvents('allEvents', {
-                fromBlock: 0,
-                toBlock: 'latest'
-            }, function(error, eventsData){})
-                .then(function(smartContractEvents){
-                    console.log(smartContractEvents);
-                    for(let smartContractEvent of smartContractEvents) {
-
-                        if (smartContractEvent.event === "NFTCollectionCreated") {
-                            collections.push({
-                                title: smartContractEvent.returnValues[0],
-                                address: smartContractEvent.returnValues[1]
-                            });
-                        }
-                    }
-                });
-        } catch (error) {
-            console.error(error);
-        }
-
-        app.setState({
-            collections: collections,
-            nfts: nfts
-        });
-    }
 
   render() {
       return (
@@ -144,7 +52,8 @@ class App extends Component {
             <BrowserRouter>
               <Routes>
                   <Route exact path='/my-nft' element={<MyNFT />}/>
-                  <Route exact path='/collections' element={<Collections collections={this.state.collections}/>}/>
+                  <Route exact path='/' element={<Collections />}/>
+                  <Route exact path='/collections' element={<Collections />}/>
                   <Route path='collections'>
                       <Route exact path='new' element={<NewCollection />}/>
                       <Route path=":collectionId" element={<Nfts />}>

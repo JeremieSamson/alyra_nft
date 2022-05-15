@@ -6,8 +6,8 @@
 
 ## Environments
 
-- Contract is deployed here:
-- App is deployed here: https://alyranft.herokuapp.com/
+- Contract is deployed here: [CollectionMarket](https://ropsten.etherscan.io/address/0x880E23Ac9Ede165C4FE1eCECC2DDc326287b0331) and [CollectionFactory](https://ropsten.etherscan.io/address/0x66569C50ad60F11D5E08c4E87533198Bd318B795)
+- App is deployed here: [https://alyranft.herokuapp.com](https://alyranft.herokuapp.com/)
 - Demo is available here:
 
 ## Development

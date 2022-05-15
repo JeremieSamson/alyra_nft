@@ -10,10 +10,9 @@ class ConnectButton extends Component {
         this.handleConnectWallet = this.handleConnectWallet.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
         this.accountChangedHandler = this.accountChangedHandler.bind(this);
-        this.chainChangedHandler = this.chainChangedHandler.bind(this);
 
         const account = JSON.parse(window.localStorage.getItem('account'));
-        console.log(account);
+
         this.state = {
             account: account !== null && account['account'] !== undefined ? account['account'] : null,
             collectionFactoryContract: null,
@@ -26,7 +25,6 @@ class ConnectButton extends Component {
         window.addEventListener("load", async () => {
             if (window.ethereum) {
                 window.ethereum.on('accountsChanged', this.accountChangedHandler);
-                window.ethereum.on('chainChanged', this.chainChangedHandler);
             }
         });
     };
@@ -44,12 +42,6 @@ class ConnectButton extends Component {
             const web3 = await getWeb3();
             const accounts = await web3.eth.getAccounts();
             const networkId = await web3.eth.net.getId();
-
-            // if (networkId !== 1652538770593 && networkId !== 42) {
-            //     NotificationManager.error('You are on a wrong network', '', 5000);
-            //
-            //     return;
-            // }
 
             const deployedNetwork = CollectionFactory.networks[networkId];
             const collectionFactoryContract = new web3.eth.Contract(
@@ -71,12 +63,6 @@ class ConnectButton extends Component {
     accountChangedHandler(newAccount) {
         window.localStorage.setItem('account', JSON.stringify({account: newAccount}));
         this.setState({account: newAccount});
-    }
-
-    chainChangedHandler(newChainId) {
-        if (newChainId !== "0x539" || newChainId !== "0x2a") {
-            NotificationManager.error('This chain is not supported', '', 5000);
-        }
     }
 
     render() {
