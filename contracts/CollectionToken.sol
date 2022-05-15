@@ -109,7 +109,7 @@ contract CollectionToken is ERC721Enumerable, ERC721URIStorage {
     /**
      * @notice Mint the whole collection
      */
-    function mintCollection(string[] memory tokenMetadataURIs) public isOwner {
+    function mintCollection(string[] memory tokenMetadataURIs) public payable isOwner {
         uint totalSupply = totalSupply();
         // string[3] memory tokenMetadataURIs = [
         //     "mojo-jojo.json",

@@ -1,17 +1,24 @@
-import React, {Component, useState} from 'react'
+import React, {Component} from 'react'
 import getWeb3 from "../getWeb3";
 import {NotificationManager} from "react-notifications";
-import Contract from "../contracts/SimpleStorage.json";
+import CollectionFactory from "../contracts/CollectionFactory.json";
 
 class ConnectButton extends Component {
     constructor(props) {
         super(props);
+
         this.handleConnectWallet = this.handleConnectWallet.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
         this.accountChangedHandler = this.accountChangedHandler.bind(this);
         this.chainChangedHandler = this.chainChangedHandler.bind(this);
-        this.state = JSON.parse(window.localStorage.getItem('state')) || {
-            accounts: null,
+
+        const account = JSON.parse(window.localStorage.getItem('account'));
+        console.log(account);
+        this.state = {
+            account: account !== null && account['account'] !== undefined ? account['account'] : null,
+            collectionFactoryContract: null,
+            collections: [],
+            nfts: []
         }
     }
 
@@ -37,14 +44,21 @@ class ConnectButton extends Component {
             const web3 = await getWeb3();
             const accounts = await web3.eth.getAccounts();
             const networkId = await web3.eth.net.getId();
-            const deployedNetwork = Contract.networks[networkId];
-            const contract = new web3.eth.Contract(
-                Contract.abi,
+
+            // if (networkId !== 1652538770593 && networkId !== 42) {
+            //     NotificationManager.error('You are on a wrong network', '', 5000);
+            //
+            //     return;
+            // }
+
+            const deployedNetwork = CollectionFactory.networks[networkId];
+            const collectionFactoryContract = new web3.eth.Contract(
+                CollectionFactory.abi,
                 deployedNetwork && deployedNetwork.address,
             );
 
-            super.setState({accounts: accounts, contract: contract});
-            window.localStorage.setItem('state', JSON.stringify({accounts: accounts, contract: contract}));
+            window.localStorage.setItem('account', JSON.stringify({account: accounts[0]}));
+            super.setState({account: accounts, collectionFactoryContract: collectionFactoryContract});
         } catch (error) {
             // Catch any errors for any of the above operations.
             alert(
@@ -55,13 +69,12 @@ class ConnectButton extends Component {
     }
 
     accountChangedHandler(newAccount) {
-        window.localStorage.setItem('state', JSON.stringify({newAccount}));
-        this.setState({accounts: newAccount});
+        window.localStorage.setItem('account', JSON.stringify({account: newAccount}));
+        this.setState({account: newAccount});
     }
 
     chainChangedHandler(newChainId) {
-        console.log(newChainId);
-        if (newChainId !== "0x539") {
+        if (newChainId !== "0x539" || newChainId !== "0x2a") {
             NotificationManager.error('This chain is not supported', '', 5000);
         }
     }
@@ -70,8 +83,8 @@ class ConnectButton extends Component {
         return (
             <>
                 {
-                    this.state.accounts>0
-                        ? <span><a href="/my-nft">My NFTs</a>&nbsp;&nbsp;<a href="" onClick={this.handleLogout}>Log out</a></span>
+                    this.state.account>0
+                        ? <span><a href="/collections/new">Create Collection</a>&nbsp;&nbsp;<a href="/my-nft">My NFTs</a>&nbsp;&nbsp;<a href="" onClick={this.handleLogout}>Log out</a></span>
                         : <a href="#" onClick={this.handleConnectWallet}>Sign In</a>
                 }
             </>

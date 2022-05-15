@@ -1,5 +1,4 @@
 const CollectionFactory = artifacts.require('./CollectionFactory.sol')
-// const CollectionToken = artifacts.require('./CollectionToken.sol')
 const CollectionMarket = artifacts.require('./CollectionMarket.sol')
 const collectionName = 'Crypto Brothers'
 const collectionSymbol = 'CP'

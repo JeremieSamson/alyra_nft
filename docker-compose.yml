@@ -7,10 +7,10 @@ services:
     volumes:
       - .:/app
 
-  ganache:
-    build: ./docker/ganache
-    ports:
-      - 8545:8545
+#  ganache:
+#    build: ./docker/ganache
+#    ports:
+#      - 8545:8545
 
   react:
     build: ./docker/node

@@ -1,24 +1,24 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import getWeb3 from "../getWeb3";
 import CollectionMarket from "../contracts/CollectionMarket.json";
-import MintedNFTItem from "./MintedNFTItem";
+import UnsoldNFTItem from "./UnsoldNftItem";
 import CollectionToken from "../contracts/CollectionToken.json";
 
-class MyNFT extends Component {
+class Collections extends Component {
     constructor(props) {
         super(props);
         this.handleSearch = this.handleSearch.bind(this);
+
         this.state = {
             query: null,
             nfts: [],
             isLoading: true
-        };
+        }
     }
 
     async componentDidMount() {
         try {
             const web3 = await getWeb3();
-            const accounts = await web3.eth.getAccounts();
             const networkId = await web3.eth.net.getId();
 
             const deployedNetwork = CollectionMarket.networks[networkId];
@@ -27,7 +27,7 @@ class MyNFT extends Component {
                 deployedNetwork && deployedNetwork.address,
             );
 
-            const nfts = await collectionMarketContract.methods.getSenderItems().call({from: accounts[0]});
+            const nfts = await collectionMarketContract.methods.getUnsoldItems().call();
 
             for (const nft of nfts) {
                 await this.loadNftExtendedData(nft, web3);
@@ -35,10 +35,6 @@ class MyNFT extends Component {
 
             this.setState({isLoading: false});
         } catch (error) {
-            // Catch any errors for any of the above operations.
-            alert(
-                `Failed to load web3, accounts, or contract. Check console for details.`,
-            );
             console.error(error);
         }
     };
@@ -65,6 +61,7 @@ class MyNFT extends Component {
         await fetch(nftExtended.tokenUri)
             .then(response => response.json())
             .then((jsonData) => {
+
                 nftExtended.name = jsonData.name;
                 nftExtended.description = jsonData.description;
                 nftExtended.image = jsonData.pinata_url;
@@ -93,20 +90,30 @@ class MyNFT extends Component {
             );
         }
 
-        const filteredData = this.state.nfts.filter((data) => {
+        const filteredCollections = this.state.nfts.filter((collection) => {
             if (this.state.query === null || this.state.query === '') {
-                return data;
+                return collection;
             } else {
-                return data.name.toLowerCase().includes(this.state.query.toLowerCase())
+                return collection.name.toLowerCase().includes(this.state.query.toLowerCase())
             }
         })
+
+        if (filteredCollections.length === 0) {
+            return (
+                <>
+                    <div className="container mt-5 mb-5">
+                        <h1>There is no collection</h1>
+                    </div>
+                </>
+            );
+        }
 
         return (
             <>
                 <div className="container mt-5 mb-5">
-                    <h1>Your NFT Collection</h1>
+                    <h1>Explore collections</h1>
                     <div className="input-group rounded searchInput">
-                        <input type="search" className="form-control rounded" placeholder="Search" aria-label="Search"
+                        <input type="search" className="form-control rounded" placeholder="Search a collection ..." aria-label="Search"
                                aria-describedby="search-addon"
                                onChange={this.handleSearch}
                         />
@@ -115,15 +122,13 @@ class MyNFT extends Component {
                           </span>
                     </div>
                     <div className="row row-cols-1 row-cols-md-3 g-4">
-                        {filteredData.map((item) => (
-                            <div className="col">
-                                <MintedNFTItem
+                        {filteredCollections.map((item) => (
+                            <div className="col" key={item.tokenId}>
+                                <UnsoldNFTItem
                                     title={item.name}
                                     price={item.price}
                                     itemId={item.itemId}
                                     tokenId={item.tokenId}
-                                    owner={item.owner}
-                                    seller={item.seller}
                                     tokenContractAddress={item.tokenContractAddress}
                                     description={item.description}
                                     image={item.image}
@@ -137,4 +142,4 @@ class MyNFT extends Component {
     }
 }
 
-export default MyNFT;
+export default Collections;

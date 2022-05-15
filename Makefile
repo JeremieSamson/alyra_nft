@@ -59,7 +59,7 @@ truffle-config.js:
 	$(TRUFFLE) init
 
 truffle-migrate:
-	$(TRUFFLE) migrate --network docker
+	$(TRUFFLE) migrate --network development
 
 truffle-migrate-reset:
 	$(TRUFFLE) migrate --network docker --reset
@@ -68,7 +68,7 @@ truffle-test:
 	$(TRUFFLE) test --network docker
 
 truffle-compile:
-	$(TRUFFLE) compile --network docker
+	$(TRUFFLE) compile --network development
 
 ## LINT
 
@@ -91,7 +91,7 @@ eslintfix:
 react-build: truffle-compile
 	$(REACT_NPM) run build
 
-react-start: truffle-compile
+react-start: up truffle-compile
 	$(REACT_NPM) run start
 
 react-test: truffle-compile

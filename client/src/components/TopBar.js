@@ -1,12 +1,8 @@
 import React, { Component } from 'react'
-import { Navbar, Nav, Container, NavDropdown, Form, FormControl, Button } from 'react-bootstrap';
+import { Navbar, Nav, Container } from 'react-bootstrap';
 import ConnectButton from "./ConnectButton";
 
 class TopBar extends Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
           <>
@@ -24,8 +20,7 @@ class TopBar extends Component {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="me-auto">
-                            <Nav.Link href="/">Home</Nav.Link>
-                            <Nav.Link href="/explore">Explore</Nav.Link>
+                            <Nav.Link href="/collections">Explore</Nav.Link>
                             <Nav.Link href="/team">Team</Nav.Link>
                             <Nav.Link href="/contact">Contact</Nav.Link>
                         </Nav>

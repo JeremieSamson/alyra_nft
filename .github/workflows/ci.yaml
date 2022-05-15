@@ -19,9 +19,6 @@ jobs:
       - name: Run Solium
         run: ./node_modules/.bin/solium --dir ./contracts/
 
-      - name: Run ESLint
-        run: ./node_modules/.bin/eslint . --ext .js
-
   test_coverage:
     name: Test smartcontract
     needs: lint

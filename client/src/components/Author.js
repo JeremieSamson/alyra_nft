@@ -20,10 +20,10 @@ class Home extends Component {
                                 <p className="card-text">
                                     {this.props.description}
                                 </p>
-                                <a href={this.props.githubLink} className="card-link" target="_blank">
+                                <a href={this.props.githubLink} className="card-link" target="_blank" rel="noopener noreferrer">
                                     <i className="fa-brands fa-github"></i>
                                 </a>
-                                <a href={this.props.twitterLink} className="card-link" target="_blank">
+                                <a href={this.props.twitterLink} className="card-link" target="_blank" rel="noopener noreferrer">
                                     <i className="fa-brands fa-twitter"></i>
                                 </a>
                             </div>
