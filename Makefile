@@ -59,7 +59,7 @@ truffle-config.js:
 	$(TRUFFLE) init
 
 truffle-migrate:
-	$(TRUFFLE) migrate --network development
+	$(TRUFFLE) migrate --network docker
 
 truffle-migrate-reset:
 	$(TRUFFLE) migrate --network docker --reset
@@ -68,7 +68,7 @@ truffle-test:
 	$(TRUFFLE) test --network docker
 
 truffle-compile:
-	$(TRUFFLE) compile --network development
+	$(TRUFFLE) compile --network docker
 
 ## LINT
 

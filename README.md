@@ -7,7 +7,8 @@
 ## Environments
 
 - Contract is deployed here:
-- App is deployed here:
+- App is deployed here: https://alyranft.herokuapp.com/
+- Demo is available here:
 
 ## Development
 
