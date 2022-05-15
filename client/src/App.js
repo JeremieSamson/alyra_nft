@@ -16,20 +16,6 @@ import PinataUpload from "./components/PinataUpload";
 import MyCollections from "./components/MyCollections";
 
 class App extends Component {
-    
-  runExample = async () => {
-    const { accounts, contract } = this.state;
-
-    // Stores a given value, 5 by default.
-    await contract.methods.set(5).send({ from: accounts[0] });
-
-    // Get the value from the contract to prove it worked.
-    const response = await contract.methods.get().call();
-
-    // Update state with the result.
-    this.setState({ storageValue: response });
-  };
-
   render() {
       return (
           <div className="App">
@@ -40,7 +26,7 @@ class App extends Component {
                   <Routes>
                       <Route exact path='/' element={<Home />}/>
                       <Route exact path='/my-nft' element={<MyNFT />}/>
-                      <Route path='collections'>
+                      <Route path='collections' element={<Collections />}>
                           <Route exact path='new' element={<NewCollection />}/>
                           <Route exact path="mint" element={<MyCollections />}/>
                           <Route path=":collectionId" element={<Nfts />}>

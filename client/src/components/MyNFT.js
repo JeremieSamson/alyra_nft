@@ -1,28 +1,64 @@
 import React, { Component } from 'react'
-import nfts from "../data/nfts.json";
 import Card from "./Card";
+import getWeb3 from "../getWeb3";
+import {NotificationManager} from "react-notifications";
+import CollectionMarket from "../contracts/CollectionMarket.json";
 
 class MyNFT extends Component {
     constructor(props) {
         super(props);
         this.handleSearch = this.handleSearch.bind(this);
         this.state = {
-          query: null
+            query: null,
+            nfts: []
         };
     }
+
+    async componentDidMount() {
+        try {
+            const web3 = await getWeb3();
+            const accounts = await web3.eth.getAccounts();
+            const networkId = await web3.eth.net.getId();
+
+            const deployedNetwork = CollectionMarket.networks[networkId];
+            const collectionMarketContract = new web3.eth.Contract(
+                CollectionMarket.abi,
+                deployedNetwork && deployedNetwork.address,
+            );
+
+            const nfts = await collectionMarketContract.methods.getSenderItems().call({from: accounts[0]});
+            this.setState({nfts: nfts});
+        } catch (error) {
+            // Catch any errors for any of the above operations.
+            alert(
+                `Failed to load web3, accounts, or contract. Check console for details.`,
+            );
+            console.error(error);
+        }
+    };
 
     handleSearch(e) {
         this.setState({query:e.target.value});
     }
 
     render() {
-        const filteredData = nfts.filter((data) => {
+        const filteredData = this.state.nfts.filter((data) => {
             if (this.state.query === null || this.state.query === '') {
                 return data;
             } else {
                 return data.title.toLowerCase().includes(this.state.query.toLowerCase())
             }
         })
+
+        if (filteredData.length === 0) {
+            return (
+                <>
+                    <div className="container mt-5 mb-5">
+                        <h1>You don't have any NFT</h1>
+                    </div>
+                </>
+            );
+        }
 
         return (
             <>
