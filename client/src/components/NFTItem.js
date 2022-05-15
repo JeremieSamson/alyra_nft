@@ -26,10 +26,6 @@ class NFTItem extends Component {
                 address,
             );
             const baseUri = await collection.methods.mintCollection([this.props.path]).send({from: accounts[0]});
-            console.log(baseUri);
-            //await instanceCollectionToken.methods.mintCollection([this.props.path]).call({from: accounts[0]});
-
-            //NotificationManager.success('NFT Minted', '', 5000);
         } catch (error) {
             console.log(error);
         }
