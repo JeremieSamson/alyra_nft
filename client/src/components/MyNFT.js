@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
-import Card from "./Card";
 import getWeb3 from "../getWeb3";
-import {NotificationManager} from "react-notifications";
 import CollectionMarket from "../contracts/CollectionMarket.json";
 import MintedNFTItem from "./MintedNFTItem";
 
