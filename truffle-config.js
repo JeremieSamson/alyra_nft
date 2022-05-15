@@ -24,6 +24,10 @@ module.exports = {
                 })
             },
             network_id: 42
+        },
+        ropsten: {
+            provider: () => new HDWalletProvider(`${process.env.MNEMONIC}`, `https://ropsten.infura.io/v3/${process.env.INFURA_ID}`),
+            network_id: 3
         }
     },
     mocha: {
